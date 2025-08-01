@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Página Personal</title>
+  <meta name="description" content="Página personal con modo oscuro, saludo dinámico y formulario." />
+  <style>
+    :root {
+      --bg:#f5f5f5;
+      --card:#fff;
+      --text:#222;
+      --primary:#007acc;
+      --radius:12px;
+      --shadow:0 8px 24px rgba(0,0,0,0.05);
+      --transition:.25s ease;
+    }
+    [data-theme="dark"] {
+      --bg:#1f2937;
+      --card:#2a3348;
+      --text:#e3e8ff;
+      --primary:#5b9bff;
+    }
+
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height:1.5;
+      padding:1rem;
+      max-width:1000px;
+      margin:auto;
+      transition: background var(--transition), color var(--transition);
+    }
+    .site-header {
+      text-align:center;
+      padding:1rem 0;
+    }
+    .nav {
+      display:flex;
+      justify-content:center;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin:1rem 0;
+    }
+    .nav a {
+      text-decoration:none;
+      padding:.5rem 1rem;
+      background: var(--primary);
+      color:#fff;
+      border-radius:6px;
+      transition: filter .2s;
+      font-size:.9rem;
+    }
+    .nav a:hover { filter:brightness(1.1); }
+    .toggles {
+      display:flex;
+      justify-content:center;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-bottom: 1rem;
+      font-size:.9rem;
+      gap: .75rem;
+    }
+    main {
+      display:grid;
+      gap:1rem;
+      margin-bottom:2rem;
+    }
+    .card {
+      background: var(--card);
+      padding:1rem 1rem 1.25rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow:hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover { transform: translateY(-3px); }
+    .site-footer {
+      text-align:center;
+      font-size:.8rem;
+      padding:1rem 0;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .badge {
+      display:inline-block;
+      background: var(--primary);
+      color:#fff;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:.7rem;
+      margin-right:.5rem;
+    }
+
+    .form-group {
+      margin-bottom:1rem;
+    }
+    label {
+      display:block;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    input, textarea {
+      width:100%;
+      padding:.65rem .75rem;
+      border:1px solid rgba(0,0,0,0.1);
+      border-radius:8px;
+      font-size:1rem;
+      background: #fff;
+      resize: vertical;
+      transition: border .2s;
+    }
+    input:focus, textarea:focus {
+      outline:none;
+      border-color: var(--primary);
+    }
+    .btn {
+      cursor:pointer;
+      border:none;
+      padding:.75rem 1.25rem;
+      border-radius:8px;
+      background: var(--primary);
+      color:#fff;
+      font-weight:600;
+      font-size:1rem;
+      transition: filter .2s;
+    }
+    .btn:hover { filter:brightness(1.1); }
+    .small {
+      font-size:.75rem;
+      color:rgba(0,0,0,0.6);
+    }
+    .error {
+      color:#ff6b6b;
+      font-size:.8rem;
+      margin-top:4px;
+    }
+
+    .flex {
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+
+    .greeting {
+      font-size:1.1rem;
+      margin: .5rem 0;
+    }
+
+    @media (min-width:768px){
+      main { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      font-weight:600;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Hola, soy <span id="nombre">ALEXIS</span></h1>
+    <p class="greeting" id="saludo">Bienvenido</p>
+    <div class="toggles">
+      <button id="theme-btn" class="theme-toggle">Cambiar tema</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <main>
+    <section id="sobre-mi" class="card">
+      <h2>Sobre mí</h2>
+      <p>Escribe aquí una breve descripción de quién eres, qué te gusta o qué estás aprendiendo.</p>
+    </section>
+
+    <section id="proyectos" class="card">
+      <h2>Proyectos</h2>
+      <ul>
+        <li><span class="badge">1.</span> Página personal responsiva</li>
+        <li><span class="badge">2.</span> Formulario con validación</li>
+        <li><span class="badge">3.</span> Modo oscuro / claro</li>
+      </ul>
+    </section>
+
+    <section id="contacto" class="card" style="grid-column:1/-1;">
+      <h2>Contacto</h2>
+      <p>Llena el formulario y te muestro un mensaje (esto es solo front-end, no se envía a servidor).</p>
+      <form id="contact-form" novalidate>
+        <div class="form-group">
+          <label for="nombre-input">Nombre</label>
+          <input id="nombre-input" type="text" placeholder="Tu nombre" required />
+          <div class="error" data-for="nombre"></div>
+        </div>
+        <div class="form-group">
+          <label for="email-input">Correo</label>
+          <input id="email-input" type="email" placeholder="tu@correo.com" required />
+          <div class="error" data-for="email"></div>
+        </div>
+        <div class="form-group">
+          <label for="mensaje-input">Mensaje</label>
+          <textarea id="mensaje-input" rows="4" placeholder="Escribe aquí..." required></textarea>
+          <div class="error" data-for="mensaje"></div>
+        </div>
+        <button type="submit" class="btn">Enviar</button>
+        <p id="form-status" class="small" style="margin-top:.5rem;"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p style="color:inherit;">© 2025 Tu Nombre. Hecho con HTML, CSS y JavaScript.</p>
+  </footer>
+
+  <script>
+    // Saludo dinámico
+    function actualizarSaludo() {
+      const now = new Date();
+      const hour = now.getHours();
+      let texto = "Hola";
+      if (hour >= 5 && hour < 12) texto = "Buenos días";
+      else if (hour >= 12 && hour < 18) texto = "Buenas tardes";
+      else texto = "Buenas noches";
+      document.getElementById("saludo").textContent = texto + " 👋";
+    }
+
+    // Modo oscuro / claro persistente
+    const themeBtn = document.getElementById("theme-btn");
+    function aplicarTema(t) {
+      if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+      else document.documentElement.removeAttribute("data-theme");
+    }
+    function cargarTema() {
+      const guardado = localStorage.getItem("tema-preferencia");
+      aplicarTema(guardado === "dark" ? "dark" : "light");
+    }
+    themeBtn.addEventListener("click", () => {
+      const actual = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      const siguiente = actual === "dark" ? "light" : "dark";
+      aplicarTema(siguiente);
+      localStorage.setItem("tema-preferencia", siguiente);
+    });
+
+    // Validación simple de formulario
+    const form = document.getElementById("contact-form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let errores = false;
+
+      const nombre = document.getElementById("nombre-input");
+      const email = document.getElementById("email-input");
+      const mensaje = document.getElementById("mensaje-input");
+
+      // limpiar errores previos
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      if (!nombre.value.trim()) {
+        document.querySelector('[data-for="nombre"]').textContent = "El nombre es obligatorio.";
+        errores = true;
+      }
+      if (!email.value.trim()) {
+        document.querySelector('[data-for="email"]').textContent = "El correo es obligatorio.";
+        errores = true;
+      } else if (!/^\S+@\S+\.\S+$/.test(email.value)) {
+        document.querySelector('[data-for="email"]').textContent = "Correo inválido.";
+        errores = true;
+      }
+      if (!mensaje.value.trim()) {
+        document.querySelector('[data-for="mensaje"]').textContent = "El mensaje no puede estar vacío.";
+        errores = true;
+      }
+
+      const status = document.getElementById("form-status");
+      if (errores) {
+        status.textContent = "Corrige los errores arriba y vuelve a intentar.";
+        return;
+      }
+
+      // Simular envío
+      status.textContent = "Enviando...";
+      setTimeout(() => {
+        status.textContent = "¡Gracias! Tu mensaje fue recibido (simulado).";
+        form.reset();
+      }, 800);
+    });
+
+    // Arrancar
+    actualizarSaludo();
+    cargarTema();
+  </script>
+</body>
+</html>
