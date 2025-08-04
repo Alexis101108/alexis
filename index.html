@@ -1,304 +1,364 @@
 <!DOCTYPE html>
 <html lang="es">
-
+<head>
   <meta charset="UTF-8" />
+  <title>ALEXIS MARTÍNEZ JAIMES</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALEXIS MARTINEZ JAIMES</title>
-  <meta name="description" content="Página personal con modo oscuro, saludo dinámico y formulario." />
   <style>
     :root {
-      --bg:#f5f5f5;
-      --card:#fff;
-      --text:#222;
-      --primary:#007acc;
-      --radius:12px;
-      --shadow:0 8px 24px rgba(0,0,0,0.05);
-      --transition:.25s ease;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --fg: #1f2d45;
+      --muted: #555f7a;
+      --border: #d1d9ee;
+      --radius: 12px;
+      --shadow: 0 16px 40px -10px rgba(0,0,0,0.15);
+      --transition: .35s cubic-bezier(.22,.61,.36,1);
     }
     [data-theme="dark"] {
-      --bg:#1f2937;
-      --card:#2a3348;
-      --text:#e3e8ff;
-      --primary:#5b9bff;
+      --bg: #0f172a;
+      --card: #1c2749;
+      --fg: #d7e0ff;
+      --muted: #a3b0ff;
+      --border: #2f3d72;
     }
-
-    * { box-sizing:border-box; }
+    * { box-sizing: border-box; }
     body {
-      margin:0;
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      margin: 0;
+      padding: 1rem;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       background: var(--bg);
-      color: var(--text);
-      line-height:1.5;
-      padding:1rem;
-      max-width:1000px;
-      margin:auto;
+      color: var(--fg);
+      min-height: 100%;
+      line-height: 1.4;
       transition: background var(--transition), color var(--transition);
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .site-header {
-      text-align:center;
-      padding:1rem 0;
-    }
-    .nav {
-      display:flex;
-      justify-content:center;
-      gap:1rem;
-      flex-wrap:wrap;
-      margin:1rem 0;
-    }
-    .nav a {
-      text-decoration:none;
-      padding:.5rem 1rem;
-      background: var(--primary);
-      color:#fff;
-      border-radius:6px;
-      transition: filter .2s;
-      font-size:.9rem;
-    }
-    .nav a:hover { filter:brightness(1.1); }
-    .toggles {
-      display:flex;
-      justify-content:center;
-      gap:1rem;
-      flex-wrap:wrap;
-      margin-bottom: 1rem;
-      font-size:.9rem;
+    h1 { margin: 0; font-size: 2rem; }
+    h2 { margin-top: 1.5rem; font-size: 1.5rem; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: .75rem;
+      margin-bottom: 1rem;
     }
-    main {
-      display:grid;
-      gap:1rem;
-      margin-bottom:2rem;
+    .theme-switch {
+      cursor: pointer;
+      background: none;
+      border: 2px solid var(--fg);
+      padding: .4rem .9rem;
+      border-radius: 999px;
+      font-size: .9rem;
+      font-weight: 600;
+      transition: all var(--transition);
+      color: var(--fg);
     }
-    .card {
+    .theme-switch:hover {
+      filter: brightness(1.1);
+    }
+    .intro {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: start;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: enter .7s forwards;
+    }
+    @keyframes enter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .profile {
+      flex: 0 0 140px;
+    }
+    .profile img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid var(--fg);
+      display: block;
+      transition: transform var(--transition);
+    }
+    .profile img:hover {
+      transform: scale(1.05);
+    }
+    .bio {
+      flex: 1;
+      min-width: 220px;
+    }
+    .section {
       background: var(--card);
-      padding:1rem 1rem 1.25rem;
       border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
       box-shadow: var(--shadow);
       position: relative;
-      overflow:hidden;
+      overflow: hidden;
+      transform: translateY(15px);
+      opacity: 0;
+      animation: pop .6s forwards;
+      border: 1px solid var(--border);
+    }
+    .section.delay-1 { animation-delay: .1s; }
+    .section.delay-2 { animation-delay: .25s; }
+    .section.delay-3 { animation-delay: .4s; }
+    @keyframes pop {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .projects {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: .5rem;
+    }
+    .project-card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 12px 30px -5px rgba(0,0,0,0.12);
       transition: transform var(--transition), box-shadow var(--transition);
+      border: 1px solid var(--border);
+      color: var(--fg);
     }
-    .card:hover { transform: translateY(-3px); }
-    .site-footer {
-      text-align:center;
-      font-size:.8rem;
-      padding:1rem 0;
-      color: rgba(255,255,255,0.7);
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px -10px rgba(0,0,0,0.2);
     }
-
-    .badge {
-      display:inline-block;
-      background: var(--primary);
-      color:#fff;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:.7rem;
-      margin-right:.5rem;
+    .project-card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
     }
-
-    .form-group {
-      margin-bottom:1rem;
-    }
-    label {
-      display:block;
-      font-weight:600;
-      margin-bottom:4px;
-    }
-    input, textarea {
-      width:100%;
-      padding:.65rem .75rem;
-      border:1px solid rgba(0,0,0,0.1);
-      border-radius:8px;
-      font-size:1rem;
-      background: #fff;
-      resize: vertical;
-      transition: border .2s;
-    }
-    input:focus, textarea:focus {
-      outline:none;
-      border-color: var(--primary);
+    .project-content {
+      padding: .75rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
     }
     .btn {
-      cursor:pointer;
-      border:none;
-      padding:.75rem 1.25rem;
-      border-radius:8px;
-      background: var(--primary);
-      color:#fff;
-      font-weight:600;
-      font-size:1rem;
-      transition: filter .2s;
+      display: inline-block;
+      padding: .5rem .9rem;
+      border-radius: 999px;
+      background: var(--fg);
+      color: #fff;
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: filter var(--transition);
     }
-    .btn:hover { filter:brightness(1.1); }
-    .small {
-      font-size:.75rem;
-      color:rgba(0,0,0,0.6);
+    .btn:hover {
+      filter: brightness(1.1);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      margin-top: .5rem;
+    }
+    label {
+      font-size: .85rem;
+      font-weight: 600;
+    }
+    input, textarea {
+      padding: .6rem .8rem;
+      border-radius: 8px;
+      border: 1px solid #ccd0da;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    textarea { min-height: 100px; }
+    .feedback {
+      margin-top: .5rem;
+      font-size: .9rem;
+      padding: .65rem .9rem;
+      border-radius: 8px;
+      display: none;
+    }
+    .success {
+      background: #d1f2e0;
+      border: 1px solid #4caf80;
+      color: #1d5f47;
     }
     .error {
-      color:#ff6b6b;
-      font-size:.8rem;
-      margin-top:4px;
+      background: #ffe3d3;
+      border: 1px solid #e88754;
+      color: #7a391f;
     }
-
-    .flex {
-      display:flex;
-      gap:1rem;
-      flex-wrap:wrap;
+    .footer {
+      text-align: center;
+      font-size: .75rem;
+      margin-top: 2rem;
+      color: rgba(100,100,120,.8);
     }
-
     .greeting {
-      font-size:1.1rem;
-      margin: .5rem 0;
+      font-size: 1.1rem;
+      margin: 0.25rem 0 .75rem 0;
+      color: var(--muted);
     }
-
-    @media (min-width:768px){
-      main { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    @media (max-width: 800px) {
+      .intro { flex-direction: column; }
     }
-
-    .theme-toggle {
-      background: none;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: .5rem 1rem;
-      border-radius: 8px;
-      font-weight:600;
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid currentColor;
+      animation: blink-caret .75s step-end infinite;
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: currentColor; }
     }
   </style>
 </head>
-<body>
-  <header class="site-header">
-    <h1>Hola, soy <span id="nombre">ALEXIS</span></h1>
-    <p class="greeting" id="saludo">Bienvenido</p>
-    <div class="toggles">
-      <button id="theme-btn" class="theme-toggle">Cambiar tema</button>
+<body data-theme="light">
+
+  <div class="topbar">
+    <div>
+      <h1 style="margin:0;"><span id="nameTyped" class="typing"></span></h1>
+      <div style="font-size:.9rem; color: var(--muted);"></div>
+      <div id="saludo" class="greeting"></div>
     </div>
-  </header>
+    <button class="theme-switch" aria-label="Cambiar tema" id="toggleTheme">Cambiar tema</button>
+  </div>
 
-  <nav class="nav">
-    <a href="#sobre-mi">Sobre mí</a>
-    <a href="#proyectos">Proyectos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+  <div class="section delay-1">
+    <div class="intro">
+      <div class="profile">
+        <img src="https://via.placeholder.com/140.png?text=Alexis" alt="">
+      </div>
+      <div class="bio">
+        <p>Hola, soy Alexis. Me gusta la materia de informática y estoy aprendiendo a crear páginas web. Esta página es una versión mejorada con imágenes, animaciones ligeras, saludo contextual y efecto de escritura en el nombre.</p>
+      </div>
+    </div>
+  </div>
 
-  <main>
-    <section id="sobre-mi" class="card">
-      <h2>Sobre mí</h2>
-      <p> Me gusta la materia de informatica, actualmente estudio la preparatoria en San Diego Cuentla.</p>
-    </section>
-
-    <section id="proyectos" class="card">
-      <h2>Proyectos</h2>
-      <ul>
-        <li><span class="badge">1.</span> ESTUDIO</li>
-        <li><span class="badge">2.</span> INFORMATICA</li>
-        <li><span class="badge">3.</span> APRENDIZAJE</li>
-      </ul>
-    </section>
-
-    <section id="contacto" class="card" style="grid-column:1/-1;">
-      <h2>Contacto</h2>
-      <p>Llena el formulario y te muestro un mensaje (esto es solo un simulador, no se envía a servidor).</p>
-      <form id="contact-form" novalidate>
-        <div class="form-group">
-          <label for="nombre-input">Nombre</label>
-          <input id="nombre-input" type="text" placeholder="Tu nombre" required />
-          <div class="error" data-for="nombre"></div>
+  <div class="section delay-2">
+    <h2>Proyectos</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x300.png?text=Estudio" alt="Estudio">
+        <div class="project-content">
+          <div><strong>1. ESTUDIO</strong></div>
+          <div>Organizo mi tiempo y aprendo nuevas tecnologías.</div>
         </div>
-        <div class="form-group">
-          <label for="email-input">Correo</label>
-          <input id="email-input" type="email" placeholder="tu@correo.com" required />
-          <div class="error" data-for="email"></div>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x300.png?text=Inform%C3%A1tica" alt="Informática">
+        <div class="project-content">
+          <div><strong>2. INFORMÁTICA</strong></div>
+          <div>Me gusta programar y entender cómo funcionan los sistemas.</div>
         </div>
-        <div class="form-group">
-          <label for="mensaje-input">Mensaje</label>
-          <textarea id="mensaje-input" rows="4" placeholder="Escribe aquí..." required></textarea>
-          <div class="error" data-for="mensaje"></div>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x300.png?text=Aprendizaje" alt="Aprendizaje">
+        <div class="project-content">
+          <div><strong>3. APRENDIZAJE</strong></div>
+          <div>Siempre estoy buscando mejorar y descubrir cosas nuevas.</div>
         </div>
-        <button type="submit" class="btn">Enviar</button>
-        <p id="form-status" class="small" style="margin-top:.5rem;"></p>
-      </form>
-    </section>
-  </main>
+      </div>
+    </div>
+  </div>
 
-  <footer class="site-footer">
-    <p style="color:inherit;">© 2025 ALEXIS MARTINEZ. Hecho con HTML, CSS y JavaScript.</p>
-  </footer>
+  <div class="section delay-3">
+    <h2>Contacto</h2>
+    <p>Llena el formulario y te muestro un mensaje (simulado, no se envía realmente).</p>
+    <form id="contactForm">
+      <div>
+        <label for="nombre">Nombre</label><br>
+        <input id="nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div>
+        <label for="correo">Correo</label><br>
+        <input id="correo" type="email" required placeholder="tu@ejemplo.com">
+      </div>
+      <div>
+        <label for="mensaje">Mensaje</label><br>
+        <textarea id="mensaje" required placeholder="Escribe algo..."></textarea>
+      </div>
+      <button type="submit" class="btn">Enviar</button>
+      <div id="feedback" class="feedback"></div>
+    </form>
+  </div>
+
+  <div class="footer">
+    <div>© 2025 ALEXIS MARTÍNEZ. Hecho con HTML, CSS y JavaScript.</div>
+  </div>
 
   <script>
-    // Saludo dinámico
-    function actualizarSaludo() {
-      const now = new Date();
-      const hour = now.getHours();
-      let texto = "Hola";
-      if (hour >= 5 && hour < 12) texto = "Buenos días";
-      else if (hour >= 12 && hour < 18) texto = "Buenas tardes";
-      else texto = "Buenas noches";
-      document.getElementById("saludo").textContent = texto + " 👋";
+    // saludo según hora
+    function obtenerSaludo() {
+      const ahora = new Date();
+      const hora = ahora.getHours();
+      if (hora >= 5 && hora < 12) return "Buenos días";
+      if (hora >= 12 && hora < 19) return "Buenas tardes";
+      return "Buenas noches";
     }
+    document.getElementById("saludo").textContent = `${obtenerSaludo()}`;
 
-    // Modo oscuro / claro persistente
-    const themeBtn = document.getElementById("theme-btn");
-    function aplicarTema(t) {
-      if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
-      else document.documentElement.removeAttribute("data-theme");
+    // efecto de escritura para el nombre
+    const nombre = "ALEXIS MARTÍNEZ JAIMES";
+    const destino = document.getElementById("nameTyped");
+    let i = 0;
+    function escribir() {
+      if (i <= nombre.length) {
+        destino.textContent = nombre.slice(0, i);
+        i++;
+        setTimeout(escribir, 100);
+      } else {
+        // quitar el caret después de terminar
+        destino.style.borderRight = "none";
+      }
     }
-    function cargarTema() {
-      const guardado = localStorage.getItem("tema-preferencia");
-      aplicarTema(guardado === "dark" ? "dark" : "light");
-    }
-    themeBtn.addEventListener("click", () => {
-      const actual = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-      const siguiente = actual === "dark" ? "light" : "dark";
-      aplicarTema(siguiente);
-      localStorage.setItem("tema-preferencia", siguiente);
+    document.addEventListener("DOMContentLoaded", () => {
+      escribir();
     });
 
-    // Validación simple de formulario
-    const form = document.getElementById("contact-form");
-    form.addEventListener("submit", (e) => {
+    // tema persistido en localStorage
+    const root = document.body;
+    const toggle = document.getElementById("toggleTheme");
+    const stored = localStorage.getItem("theme");
+    if (stored) root.setAttribute("data-theme", stored);
+    function switchTheme(){
+      const current = root.getAttribute("data-theme");
+      const next = current === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    }
+    toggle.addEventListener("click", switchTheme);
+
+    // simulación de envío
+    document.getElementById("contactForm").addEventListener("submit", e => {
       e.preventDefault();
-      let errores = false;
-
-      const nombre = document.getElementById("nombre-input");
-      const email = document.getElementById("email-input");
-      const mensaje = document.getElementById("mensaje-input");
-
-      // limpiar errores previos
-      document.querySelectorAll(".error").forEach(el => el.textContent = "");
-
-      if (!nombre.value.trim()) {
-        document.querySelector('[data-for="nombre"]').textContent = "El nombre es obligatorio.";
-        errores = true;
-      }
-      if (!email.value.trim()) {
-        document.querySelector('[data-for="email"]').textContent = "El correo es obligatorio.";
-        errores = true;
-      } else if (!/^\S+@\S+\.\S+$/.test(email.value)) {
-        document.querySelector('[data-for="email"]').textContent = "Correo inválido.";
-        errores = true;
-      }
-      if (!mensaje.value.trim()) {
-        document.querySelector('[data-for="mensaje"]').textContent = "El mensaje no puede estar vacío.";
-        errores = true;
-      }
-
-      const status = document.getElementById("form-status");
-      if (errores) {
-        status.textContent = "Corrige los errores arriba y vuelve a intentar.";
+      const feedback = document.getElementById("feedback");
+      feedback.style.display = "block";
+      const nombre = document.getElementById("nombre").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const mensaje = document.getElementById("mensaje").value.trim();
+      if(!nombre || !correo || !mensaje){
+        feedback.textContent = "Por favor completa todos los campos.";
+        feedback.className = "feedback error";
         return;
       }
-
-      // Simular envío
-      status.textContent = "Enviando...";
+      feedback.textContent = `¡Gracias, ${nombre}! Tu mensaje se recibió (simulado).`;
+      feedback.className = "feedback success";
       setTimeout(() => {
-        status.textContent = "¡Gracias! Tu mensaje fue recibido (simulado).";
-        form.reset();
-      }, 800);
+        document.getElementById("contactForm").reset();
+        feedback.style.display="none";
+      }, 3000);
     });
-
-    // Arrancar
-    actualizarSaludo();
-    cargarTema();
   </script>
 </body>
 </html>
