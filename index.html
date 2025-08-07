@@ -277,7 +277,7 @@
 
   <div class="section delay-3">
     <h2>Contacto</h2>
-    <p>Llena el formulario y te muestro un mensaje (simulado, no se envía realmente).</p>
+    <p>Llena el formulario.</p>
     <form id="contactForm">
       <div>
         <label for="nombre">Nombre</label><br>
@@ -355,7 +355,7 @@
         feedback.className = "feedback error";
         return;
       }
-      feedback.textContent = `¡Gracias, ${nombre}! Tu mensaje se recibió (simulado).`;
+      feedback.textContent = `¡Gracias, ${nombre}! Tu mensaje se recibió.`;
       feedback.className = "feedback success";
       setTimeout(() => {
         document.getElementById("contactForm").reset();
